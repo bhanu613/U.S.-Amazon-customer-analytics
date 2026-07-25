@@ -84,3 +84,10 @@ This was originally a **group project** for a Business Analytics course. I am sh
 - Feature engineering (`Total Price`, date components, aggregated categories).  
 - Exploratory data analysis with Python (pandas, matplotlib, seaborn).  
 - Deriving clear business insights and building a lightweight dashboard.
+
+## Tech stack
+
+- Python
+- pandas, NumPy
+- matplotlib, seaborn
+- Chart.js (HTML dashboard)
