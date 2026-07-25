@@ -50,6 +50,10 @@ The notebook follows these steps:
 4. **Dashboard (Optional)**  
    - An interactive HTML dashboard summarising KPIs, revenue trends, category share, day‑of‑week patterns, and age‑segment revenue using `Chart.js`. 
 
+## Visualizations
+
+- [Exploratory charts (HTML)](charts/charts.html)
+
 ## Key Business Insights
 
 From the EDA: 
