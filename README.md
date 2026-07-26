@@ -16,9 +16,9 @@ Source: Harvard Dataverse (doi:10.7910/DVN/YGLYDY).
 
 We combine:
 
-- `amazon-purchases.csv` – transaction data (order date, price, quantity, product category, shipping state).   
-- `survey.csv` – demographics (age group, income group, education, state, Amazon usage).   
-- `category_map.csv` – mapping rules to aggregate raw product categories into higher‑level `Agg_Category` groups. 
+- `amazon-purchases.csv` : transaction data (order date, price, quantity, product category, shipping state).   
+- `survey.csv` : demographics (age group, income group, education, state, Amazon usage).   
+- `category_map.csv` : mapping rules to aggregate raw product categories into higher‑level `Agg_Category` groups. 
 
 ## Business Problem
 
@@ -47,7 +47,7 @@ The notebook follows these steps:
    - Monthly revenue trend over years, and daily revenue patterns by day of week.   
    - Boxplots and IQR/99th‑percentile analysis to identify outliers and very high‑value purchases. 
 
-4. **Dashboard (Optional)**  
+4. **Dashboard**  
    - An interactive HTML dashboard summarising KPIs, revenue trends, category share, day‑of‑week patterns, and age‑segment revenue using `Chart.js`. 
 
 ## Visualizations
