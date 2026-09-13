@@ -1,18 +1,14 @@
-# Data Access
+## Data Access
 
-Raw source data are not included in this repository.
+The raw source data are not included in this repository.
 
-Download the following files from the official Open e-commerce 1.0 Harvard Dataverse dataset page:
+To run the notebooks in Google Colab:
 
-- `amazon-purchases.csv`
-- `survey.csv`
+1. Download `amazon-purchases.csv` and `survey.csv` from the official Harvard Dataverse dataset page.
+2. Upload the files to a Google Drive folder named `Business Analytics`.
+3. Mount Google Drive when prompted by the notebook.
+4. Confirm that the notebook path matches:
 
-Place them locally in:
-
-```text
-data/raw/
+```python
+drive_directory = '/content/drive/MyDrive/Business Analytics'
 ```
-
-## Important
-
-Do not commit raw participant-level datasets, generated temporary files, Google Drive credentials, or personal information to GitHub.
