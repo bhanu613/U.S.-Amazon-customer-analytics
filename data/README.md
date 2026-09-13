@@ -13,8 +13,6 @@ Place them locally in:
 data/raw/
 ```
 
-The `data/raw/` directory is excluded from version control through `.gitignore`.
-
 ## Important
 
 Do not commit raw participant-level datasets, generated temporary files, Google Drive credentials, or personal information to GitHub.
