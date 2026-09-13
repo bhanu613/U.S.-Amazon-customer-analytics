@@ -1,93 +1,145 @@
-# Amazon Customer & Revenue Analytics
+# U.S. Amazon Customer Value Analytics
 
-## Project Overview
+End-to-end descriptive and predictive analytics project using Amazon purchase histories linked to customer survey characteristics.
 
-This project analyzes five years of crowdsourced U.S. Amazon purchase histories together with user demographics to understand:
+> **Academic group project** completed for the Business Analytics course at Universität Trier, 2026.
 
-- Which demographic segments (age, income, education) drive the highest revenue.
-- Which product categories dominate purchases and revenue.
-- Which U.S. states contribute most to sales.
-- How revenue evolves over time and across days of the week. 
+## Business Objective
+
+The project addresses two connected business questions:
+
+1. **Descriptive analytics:** How do product categories, customer demographics, geography, and time relate to observed purchase-record value?
+2. **Predictive analytics:** Can historical purchase behaviour and selected customer characteristics identify customers likely to become high-value future spenders?
 
 ## Dataset
 
-**Open e-commerce 1.0:** Five years of U.S. Amazon purchase histories with user demographics collected via survey.   
-Source: Harvard Dataverse (doi:10.7910/DVN/YGLYDY).
+This project uses the published **Open e-commerce 1.0** dataset, containing crowdsourced U.S. Amazon purchase histories linked to survey-based customer characteristics.
 
-We combine:
+- Dataset: [Harvard Dataverse – Open e-commerce 1.0](https://doi.org/10.7910/DVN/YGLYDY)
+- Source paper: Berke et al. (2024), *Open e-commerce 1.0: Five years of crowdsourced U.S. Amazon purchase histories with user demographics*, Scientific Data.
 
-- `amazon-purchases.csv` : transaction data (order date, price, quantity, product category, shipping state).   
-- `survey.csv` : demographics (age group, income group, education, state, Amazon usage).   
-- `category_map.csv` : mapping rules to aggregate raw product categories into higher‑level `Agg_Category` groups. 
+The raw data are not included in this repository. Please download the official dataset from Harvard Dataverse before running the notebooks.
 
-## Business Problem
+## Analytical Scope
 
-> How do demographic factors like age, income, and education constitute the highest‑value customers, and which geographic locations (states) drive customer value and regional product demand among U.S. Amazon customers? Are there regional variations in product category preferences? 
+The raw file contains a small number of records after 2022, but later coverage is incomplete. Therefore, the primary analysis uses complete observations from:
 
-## Analysis Roadmap
+**1 January 2018 to 31 December 2022**
 
-The notebook follows these steps: 
+## Part A: Descriptive Analytics
 
-1. **Data Integration**  
-   - Import libraries (`pandas`, `numpy`, `matplotlib`, `seaborn`).  
-   - Load purchases and survey data into DataFrames.  
-   - Merge them on `Survey ResponseID` to create a master dataset. 
+Part A examines transaction-level and customer-segment patterns, including:
 
-2. **Data Cleaning & Preprocessing**  
-   - Drop non‑essential columns (substance use, health, small‑biz questions, etc.).   
-   - Cast columns to appropriate types (dates, numeric, categories, boolean for `Q-demos-hispanic`).   
-   - Add date components (`Order Year`, `Order Month`, `Order DayOfWeek`).   
-   - Compute `Total Price = Purchase Price Per Unit * Quantity`.   
-   - Build `Agg_Category` by applying string‑matching rules from `category_map.csv` to group similar categories. 
+- Purchase-record value distribution and outlier analysis
+- Product-category revenue and purchase volume
+- Aggregated category analysis
+- Income-group and age-group revenue patterns
+- Geographic revenue patterns
+- Monthly and weekday purchasing trends
+- Interactive business dashboard
 
-3. **Exploratory Data Analysis (EDA)**  
-   - Distribution of `Total Price` (histograms, log‑scale bucket chart with annotated revenue per price band).   
-   - Top product categories by purchase count (`Category`, `Agg_Category`).   
-   - Revenue by income group, age group, and state.   
-   - Monthly revenue trend over years, and daily revenue patterns by day of week.   
-   - Boxplots and IQR/99th‑percentile analysis to identify outliers and very high‑value purchases. 
+### Key descriptive findings
 
-4. **Dashboard**  
-   - An interactive HTML dashboard summarising KPIs, revenue trends, category share, day‑of‑week patterns, and age‑segment revenue using `Chart.js`. 
+- Purchase-record value is strongly right-skewed: mean value is higher than the median because a small number of expensive purchases increase the average.
+- Books are the highest-revenue original product category in the analysed sample.
+- Groceries & Food is the most frequently purchased interpretable aggregated category.
+- The $100,000–$149,999 income group and customers aged 25–34 contribute the highest observed aggregate purchase-record value.
+- California has the highest observed shipping-address revenue in the analysed sample.
+- Monthly purchase-record value varies over time, with a visible increase around late 2021.
 
-## Visualizations
+## Part B: Predictive High-Value Customer Classification
 
-- [Exploratory charts (HTML)](charts/charts.html)
+Part B converts the descriptive analysis into a customer-level prediction problem.
 
-## Key Business Insights
+### Temporal design
 
-From the EDA: 
+| Component | Definition |
+|---|---|
+| Feature window | 1 January 2018–31 December 2020 |
+| Outcome window | 1 January 2021–31 December 2022 |
+| Unit of analysis | One customer (`Survey ResponseID`) |
+| Target | Top 25% of future spenders |
+| High-value threshold | Future spending ≥ $5,908.16 |
 
-- **Skewed revenue distribution:** Most purchases have low `Total Price`, but a small share of high‑value orders contributes disproportionately to overall revenue. High‑value customers should not be ignored.   
-- **Category performance:**  
-  - Raw `Category` shows `ABIS_BOOK` as a dominant category.  
-  - Aggregated `Agg_Category` reveals `Groceries & Food` as the most purchased group, informing inventory and promotion priorities.   
-- **Income segments:** The income band `$100,000–$149,999` generates the highest revenue, suggesting targeted campaigns for high‑income customers.   
-- **Age segments:** Customers aged **25–34** contribute the most revenue, indicating a key age group for product and marketing focus.   
-- **Geographic patterns:** **California** stands out as the top revenue‑generating state, with clear regional differences that matter for logistics and localized marketing.   
-- **Temporal patterns:**  
-  - Revenue spikes and drops over time, with a sharp decline around 2023 and peaks around late 2021.   
-  - **Mondays** generate the highest total revenue across the week, suggesting optimal timing for campaigns and resource allocation. 
+Customer-level features include recency, frequency, monetary value, purchase activity, category diversity, purchase regularity, tenure, and selected demographic/contextual variables.
 
-## How to Run (Colab)
+### Models evaluated
 
-1. Open the notebook `notebooks/amazon_customer_analytics.ipynb` in Google Colab.  
-2. Download `amazon-purchases.csv`, `survey.csv`, and `category_map.csv` and upload them to your Colab environment or Google Drive.  
-3. Update data paths at the top of the notebook to match your location (e.g. `/content/amazon-purchases.csv`).   
-4. Run all cells to reproduce data integration, cleaning, EDA visualizations, and the final dashboard.
+- Dummy baseline
+- Logistic Regression
+- Decision Tree
+- Random Forest
+- Gradient Boosting
 
-## Group Work and My Contribution
+### Final model results
 
-This was originally a **group project** for a Business Analytics course. I am showcasing it here to demonstrate:
+Gradient Boosting was selected as the strongest model after comparison and tuning.
 
-- Data integration and cleaning across multiple CSV files.  
-- Feature engineering (`Total Price`, date components, aggregated categories).  
-- Exploratory data analysis with Python (pandas, matplotlib, seaborn).  
-- Deriving clear business insights and building a lightweight dashboard.
+| Metric | Tuned Gradient Boosting |
+|---|---:|
+| Accuracy | 0.874 |
+| Precision | 0.764 |
+| Recall | 0.717 |
+| F1-score | 0.740 |
+| ROC-AUC | 0.920 |
 
-## Tech stack
+The highest predicted-probability decile had a 94.90% observed high-value rate on the held-out test set, compared with 24.97% overall, representing 3.80× lift.
 
-- Python
-- pandas, NumPy
-- matplotlib, seaborn
-- Chart.js (HTML dashboard)
+## Business Implications
+
+- Prioritise retention activity for customers with high historical monetary value.
+- Use category diversity as a signal for cross-selling opportunities.
+- Use predicted probabilities to fill campaign audiences based on available budget and capacity.
+- Apply lower-cost re-engagement actions to customers with long recency or low stated platform use.
+- Monitor fairness, campaign costs, model performance, and data drift before operational deployment.
+
+## Repository Structure
+
+```text
+notebooks/
+  01_descriptive_eda.ipynb
+  02_predictive_customer_value.ipynb
+
+charts/
+  part_a/
+  part_b/
+
+data/
+  README.md
+
+docs/
+  methodology.md
+  results_summary.md
+```
+
+## Reproducibility
+
+1. Download `amazon-purchases.csv` and `survey.csv` from the official Harvard Dataverse dataset page.
+2. Place the files in a local `data/raw/` directory.
+3. Update the local data path in the notebooks if necessary.
+4. Run `01_descriptive_eda.ipynb`.
+5. Run `02_predictive_customer_value.ipynb`.
+
+## Limitations
+
+- The dataset is a volunteer, crowdsourced sample and does not represent all Amazon customers.
+- Findings are sample-level descriptive associations, not causal claims.
+- Purchase-record value is not equivalent to basket-level checkout order value.
+- The predictive model estimates future high-value status during a defined outcome period; it does not calculate full customer lifetime value.
+- Model thresholds should be selected according to campaign economics, not treated as fixed universal rules.
+
+## Project Context and Contribution
+
+This repository documents a group project completed for the Business Analytics course at Universität Trier in 2026.
+
+The project was completed by Group 19. My individual contribution focused on Exploratory Data Analysis and descriptive business interpretation, including transaction-value distribution analysis, category and demographic analysis, geographic and temporal patterns, chart development, dashboard support, and documentation of findings.
+
+I also contributed to the final predictive-analysis review, including model-evaluation interpretation and the translation of results into business implications.
+
+## Technologies
+
+`Python` · `pandas` · `NumPy` · `Matplotlib` · `Seaborn` · `scikit-learn` · `Google Colab`
+
+## License and Attribution
+
+The raw data are provided by the Open e-commerce 1.0 dataset under its applicable terms. This repository contains project code, derived analysis, and documentation. Please cite the original dataset and publication if using or adapting this work.
