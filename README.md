@@ -4,6 +4,17 @@ End-to-end descriptive and predictive analytics project using Amazon purchase hi
 
 > **Academic group project** completed for the Business Analytics course at Universität Trier, 2026.
 
+## Open in Google Colab
+
+The complete notebooks can be viewed and run directly in Google Colab:
+
+- [Part A – Descriptive Analysis and Exploratory Data Analysis](https://colab.research.google.com/drive/1YXCUxXSQ_W71Vx3GyPSXyuCuENs0r_BR?usp=sharing)
+- [Part B – Predictive High-Value Customer Classification](https://colab.research.google.com/drive/1JjahOhfyc0C_Xqs6W6Zg2eIOHqIGBqjD?usp=sharing)
+
+> The Part A notebook contains the complete descriptive analysis, including data cleaning, transaction-value distribution analysis, customer-segment analysis, geographic patterns, temporal patterns, and the interactive dashboard.  
+>
+> The Part B notebook contains the customer-level predictive modelling pipeline, model comparison, Gradient Boosting tuning, test-set evaluation, probability-decile analysis, and business recommendations.
+
 ## Business Objective
 
 The project addresses two connected business questions:
